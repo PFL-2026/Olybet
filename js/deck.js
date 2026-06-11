@@ -216,9 +216,11 @@
     const termsModal = document.getElementById('termsModal');
     const distModals = document.querySelectorAll('.dist-modal');
     const videoLightbox = document.getElementById('videoLightbox');
+    const fgcModal = document.getElementById('fgcModal');
     if (eventsModal && eventsModal.classList.contains('is-open')) return;
     if (termsModal && termsModal.classList.contains('is-open')) return;
     if (videoLightbox && videoLightbox.classList.contains('is-open')) return;
+    if (fgcModal && fgcModal.classList.contains('is-open')) return;
     for (const m of distModals) {
       if (m.classList.contains('is-open')) return;
     }
@@ -387,6 +389,76 @@
       const anyOpen = Array.from(modals).some(m => m.classList.contains('is-open'));
       if (!anyOpen) return;
       if (e.key === 'Escape') { closeAllDist(); }
+    });
+  })();
+
+  // FGC detail modal — content showcase for slide 11
+  (function setupFgcModal() {
+    const modal = document.getElementById('fgcModal');
+    if (!modal) return;
+    const content = document.getElementById('fgcModalContent');
+    const triggers = document.querySelectorAll('.fgc-explore');
+
+    const DATA = {
+      'press-conferences': {
+        eyebrow: 'Fighter Generated Content',
+        title: 'Press Conferences',
+        desc: 'Front-row access to every pre-fight presser — the trash talk, the predictions and the headline moments, captured and packaged for OlyBet across social and broadcast.'
+      },
+      'backstage': {
+        eyebrow: 'Fighter Generated Content',
+        title: 'Backstage Pre-Fight',
+        desc: 'Behind-the-curtain content from the locker room to the walkout tunnel — the nervous energy, the final preparations and the raw moments fans never normally see.'
+      },
+      'face-offs': {
+        eyebrow: 'Fighter Generated Content',
+        title: 'Fighter Face-Offs',
+        desc: 'The tension of the staredown, frame by frame. High-impact face-off content built for virality and primed to drive engagement around every marquee matchup.'
+      },
+      'content-series': {
+        eyebrow: 'Fighter Generated Content',
+        title: 'PFL Content Series',
+        desc: 'Episodic, story-led content following fighters through camp, fight week and beyond — a recurring series that keeps OlyBet front and centre between events.'
+      }
+    };
+
+    function placeholders(n) {
+      let html = '<div class="fgc-modal-videos">';
+      for (let i = 0; i < n; i++) {
+        html += '<div class="fgc-video-placeholder">'
+          + '<svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+          + '<span>Video / imagery coming soon</span></div>';
+      }
+      html += '</div>';
+      return html;
+    }
+
+    function open(key) {
+      const d = DATA[key];
+      if (!d) return;
+      content.innerHTML =
+        '<div class="fgc-modal-eyebrow">' + d.eyebrow + '</div>' +
+        '<h2 class="fgc-modal-title">' + d.title + '</h2>' +
+        '<p class="fgc-modal-desc">' + d.desc + '</p>' +
+        placeholders(4);
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    function close() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      content.innerHTML = '';
+    }
+
+    triggers.forEach(t => {
+      t.addEventListener('click', (e) => {
+        e.stopPropagation();
+        open(t.getAttribute('data-fgc'));
+      });
+    });
+    modal.querySelectorAll('[data-close-fgc]').forEach(c => c.addEventListener('click', close));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) close();
     });
   })();
 

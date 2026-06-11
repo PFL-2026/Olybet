@@ -414,10 +414,10 @@ html, body {
 .cover-ls-mark {
     display: flex;
     align-items: center;
-    height: 280px;
+    height: 230px;
 }
 .cover-ls-mark img {
-    max-height: 260px;
+    max-height: 215px;
     width: auto;
     object-fit: contain;
     image-rendering: -webkit-optimize-contrast;
@@ -448,7 +448,7 @@ html, body {
 .cover-deck-strategy {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: clamp(36px, 4.4vw, 60px);
+    font-size: clamp(30px, 3.7vw, 50px);
     letter-spacing: 0.32em;
     text-transform: uppercase;
     color: #fff;
@@ -619,6 +619,16 @@ html, body {
     border: 1px solid rgba(255,255,255,0.06);
     position: relative;
     overflow: hidden;
+}
+/* Zoom out — show the full image without cropping */
+.pillar-img.pillar-img-contain {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: #06091a;
+}
+/* More prominent — scale the contained image up to ~90% of the box */
+.pillar-img.pillar-img-prominent {
+    background-size: 92% auto;
 }
 .pillar-presented {
     position: absolute;
@@ -801,21 +811,19 @@ html, body {
     inset: 0;
     overflow: hidden;
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
 }
 
-/* Frame is a fixed-aspect 16:10 box matching the source mockup. Always fills
-   panel HEIGHT (height:100%, width auto via aspect-ratio). When the panel is
-   narrower than 16:10, the frame extends past the panel sides and gets clipped
-   by the stage's overflow:hidden — i.e. cover-fit behaviour. The video is
-   positioned in this frame's coordinate space, so it stays perfectly aligned
-   with the screenshot's player rectangle regardless of panel size. */
+/* Frame fills the panel — taller coverage so the interface occupies more of
+   the page vertically. The interface image covers the frame; the OlyBet
+   branding band stays visible at the top via object-position. */
 .wb-frame {
     position: relative;
+    width: 100%;
     height: 100%;
-    aspect-ratio: 16 / 10;
     flex-shrink: 0;
+    align-self: stretch;
 }
 
 .wb-screenshot {
@@ -823,23 +831,30 @@ html, body {
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: fill;        /* the frame is exact-aspect, so no distortion */
+    object-fit: cover;       /* fill the panel vertically */
+    object-position: center top;  /* keep the OlyBet branding band visible at top */
     user-select: none;
     pointer-events: none;
 }
 
-/* Player video — fills the full player rectangle edge-to-edge.
-   Coords measured by colour-sampling the LS green border in the source:
-   TL = x=195, y=175 — BR = x=1195, y=795 in 1600x1000.
-   left=12.19%, top=17.5%, width=62.5%, height=62%. */
+/* Player video — a prominent featured stream window overlaid on the OlyBet
+   interface, centred and sized to stand out as the key "watch & bet" element. */
 .wb-player {
     position: absolute;
-    left: 12.19%;
-    top: 17.5%;
-    width: 62.5%;
-    height: 62%;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 56%;
+    aspect-ratio: 16 / 9;
+    height: auto;
     overflow: hidden;
     background: #000;
+    border-radius: 8px;
+    box-shadow:
+        0 24px 70px rgba(0,0,0,0.7),
+        0 0 0 2px rgba(238,28,37,0.7),
+        0 0 50px rgba(238,28,37,0.4);
+    z-index: 4;
 }
 .wb-video {
     width: 100%;
@@ -1615,15 +1630,15 @@ html, body {
 /* Nemkov portrait sits at left:30% with width 480px → centre is at
    left: calc(30% + 240px). Card anchor matches. */
 .amb-name.amb-name-left {
-    left: calc(30% + 240px);
+    left: calc(30% + 240px + 40px);
 }
 /* Jean portrait sits at right:8% with width 480px → centre is at
    right: calc(8% + 240px). Express that as a left value, or just use
    the right anchor with adjusted translate. Easiest: use left and compute. */
 .amb-name.amb-name-right {
     /* Right edge at 8%, portrait extends 480px to the left, centre is
-       at 240px in from the right edge of the portrait. */
-    right: calc(8% + 240px);
+       at 240px in from the right edge of the portrait. Nudged right. */
+    right: calc(8% + 240px - 40px);
     left: auto;
     transform: translateX(50%);
 }
@@ -1798,29 +1813,42 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 12px;
-    height: 92px;
-    padding: 14px 16px;
+    height: 108px;
+    padding: 12px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 8px;
-}
-.bcast-partner img {
-    max-width: 80%;
-    max-height: 30px;
-    object-fit: contain;
-}
-.bcast-partner img.bcast-logo-lg {
-    max-height: 46px;
-    max-width: 92%;
 }
 .bcast-country {
     font-family: var(--font-cond);
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
+    color: rgba(255,255,255,0.6);
+    flex-shrink: 0;
+}
+.bcast-partner-logo-panel,
+.bcast-partner > img {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    object-fit: contain;
+    max-height: none;
+}
+.bcast-partner > img {
+    object-fit: contain;
+}
+.bcast-partner > img.bcast-logo-lg {
+    padding: 6px 12px;
 }
 .social-visual {
     position: relative;
@@ -3907,3 +3935,126 @@ body.terms-modal-open { overflow: hidden; }
     transition: background 200ms;
 }
 .video-lightbox-close:hover { background: rgba(238,28,37,0.6); }
+
+/* === Slide 11 — FGC explore buttons + detail modal === */
+.fgc-tile { position: relative; }
+.fgc-explore {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    z-index: 3;
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--ls-green);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 1;
+    transform: none;
+    transition: background 200ms ease, transform 150ms ease;
+    box-shadow: 0 6px 20px rgba(238,28,37,0.4);
+}
+.fgc-explore:hover { background: var(--ls-green-bright); transform: translateY(-2px); }
+
+.fgc-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 4vh 4vw;
+}
+.fgc-modal.is-open { display: flex; }
+.fgc-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3,5,12,0.92);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.fgc-modal-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1000px;
+    max-height: 88vh;
+    overflow-y: auto;
+    background: var(--pfl-bg-2);
+    border: 1px solid rgba(238,28,37,0.3);
+    border-radius: 12px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+}
+.fgc-modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    z-index: 5;
+    width: 40px; height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 200ms;
+}
+.fgc-modal-close:hover { background: rgba(238,28,37,0.6); }
+.fgc-modal-content { padding: 48px; }
+.fgc-modal-eyebrow {
+    font-family: var(--font-cond);
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ls-green-bright);
+    margin-bottom: 12px;
+}
+.fgc-modal-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+}
+.fgc-modal-desc {
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 32px;
+    max-width: 680px;
+}
+.fgc-modal-videos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+.fgc-video-placeholder {
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,255,255,0.18);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.5);
+    font-family: var(--font-cond);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.fgc-video-placeholder svg { opacity: 0.4; }
+@media (max-width: 720px) {
+    .fgc-modal-videos { grid-template-columns: 1fr; }
+    .fgc-modal-content { padding: 32px 24px; }
+    .fgc-modal-title { font-size: 28px; }
+}
