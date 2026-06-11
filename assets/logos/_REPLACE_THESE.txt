@@ -1,0 +1,19 @@
+LOGO FILES — replace any with your own clean versions (keep exact filenames)
+============================================================================
+
+BRAND
+  olybet.png            OlyBet (red, transparent) — topbar, cover, close  ✓ clean
+
+BROADCAST PARTNERS (slide 4 — white logos on dark panels, with country flag)
+  rmc-sport.png         RMC Sport (white, transparent)     ✓ clean
+  movistar.png          Movistar (white, transparent)      ✓ clean
+  setanta.png           Setanta (white, transparent)       ⚠ NEEDS YOUR WHITE VERSION
+                        (the source had the "etanta" wordmark in black on black,
+                         so only the "S" mark survived keying — please drop in
+                         a proper full white Setanta logo)
+
+"POWERED BY" BADGES (slides 5, 10, 13 — white logos on subtle dark glass panel)
+  tgi-sport-badge.png   TGI Sport (white, transparent)     ✓ clean
+  wsc-sports-badge.png  WSC Sports (white, transparent)    ✓ clean
+
+PFL league logos live in assets/images/ and don't change.
