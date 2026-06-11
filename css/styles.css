@@ -4137,6 +4137,36 @@ body.terms-modal-open { overflow: hidden; }
     text-transform: uppercase;
 }
 .fgc-video-placeholder svg { opacity: 0.4; }
+.fgc-video-box {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}
+.fgc-video-box video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.fgc-video-label {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.65);
+    color: #fff;
+    font-family: var(--font-cond);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
 @media (max-width: 720px) {
     .fgc-modal-videos { grid-template-columns: 1fr; }
     .fgc-modal-content { padding: 32px 24px; }
