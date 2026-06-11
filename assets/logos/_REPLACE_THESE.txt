@@ -1,27 +1,19 @@
-REPLACE THESE 4 LOGO FILES WITH YOUR CLEAN TRANSPARENT VERSIONS
-================================================================
+LOGO FILES — replace any with your own clean versions (keep exact filenames)
+============================================================================
 
-Keep the EXACT filenames below. Drop your transparent PNGs in here,
-overwriting the placeholders. The deck already points at these paths,
-so no code changes are needed — just replace the files.
+BRAND
+  olybet.png            OlyBet (red, transparent) — topbar, cover, close  ✓ clean
 
-  olybet.png      → OlyBet logo (red, transparent bg)
-                    Used on: topbar, cover slide, close slide
+BROADCAST PARTNERS (slide 4 — white logos on dark panels, with country flag)
+  rmc-sport.png         RMC Sport (white, transparent)     ✓ clean
+  movistar.png          Movistar (white, transparent)      ✓ clean
+  setanta.png           Setanta (white, transparent)       ⚠ NEEDS YOUR WHITE VERSION
+                        (the source had the "etanta" wordmark in black on black,
+                         so only the "S" mark survived keying — please drop in
+                         a proper full white Setanta logo)
 
-  okko.png        → Okko logo (white, transparent bg)
-                    Used on: slide 4 (broadcast partner card)
+"POWERED BY" BADGES (slides 5, 10, 13 — white logos on subtle dark glass panel)
+  tgi-sport-badge.png   TGI Sport (white, transparent)     ✓ clean
+  wsc-sports-badge.png  WSC Sports (white, transparent)    ✓ clean
 
-  tgi-sport.png   → TGI Sport logo (white, transparent bg)
-                    Used on: slide 5 and slide 10 ("Powered by")
-
-  wsc-sports.png  → WSC Sports logo (white, transparent bg)
-                    Used on: slide 13 ("Powered by")
-
-REQUIREMENTS:
-- Must be real PNG with transparency (NOT a JPG renamed to .png)
-- Around the logo should be transparent (checkerboard), not white/black
-- White logos for okko / tgi-sport / wsc-sports so they read on dark slides
-- Red logo for olybet
-
-The PFL league logos are separate and live in assets/images/
-(pfl_logo.png, pfl_logo_white.png) — do not need changing.
+PFL league logos live in assets/images/ and don't change.
