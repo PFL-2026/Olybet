@@ -20,7 +20,7 @@
     { idx: 7, slides: [16] },
   ];
 
-  const TOTAL_LOGICAL = 16;
+  const TOTAL_LOGICAL = 15;
   let currentIdx = 0;
 
   // === Russian events horizontal scroll ===
