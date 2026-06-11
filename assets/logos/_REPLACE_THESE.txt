@@ -1,0 +1,27 @@
+REPLACE THESE 4 LOGO FILES WITH YOUR CLEAN TRANSPARENT VERSIONS
+================================================================
+
+Keep the EXACT filenames below. Drop your transparent PNGs in here,
+overwriting the placeholders. The deck already points at these paths,
+so no code changes are needed — just replace the files.
+
+  olybet.png      → OlyBet logo (red, transparent bg)
+                    Used on: topbar, cover slide, close slide
+
+  okko.png        → Okko logo (white, transparent bg)
+                    Used on: slide 4 (broadcast partner card)
+
+  tgi-sport.png   → TGI Sport logo (white, transparent bg)
+                    Used on: slide 5 and slide 10 ("Powered by")
+
+  wsc-sports.png  → WSC Sports logo (white, transparent bg)
+                    Used on: slide 13 ("Powered by")
+
+REQUIREMENTS:
+- Must be real PNG with transparency (NOT a JPG renamed to .png)
+- Around the logo should be transparent (checkerboard), not white/black
+- White logos for okko / tgi-sport / wsc-sports so they read on dark slides
+- Red logo for olybet
+
+The PFL league logos are separate and live in assets/images/
+(pfl_logo.png, pfl_logo_white.png) — do not need changing.
