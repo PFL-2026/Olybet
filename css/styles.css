@@ -4191,6 +4191,8 @@ body.terms-modal-open { overflow: hidden; }
 }
 .fgc-embed-label { pointer-events: none; z-index: 2; }
 .fgc-video-label--top { top: 12px; bottom: auto; pointer-events: none; z-index: 2; }
+.fgc-video-label--ctp { pointer-events: none; z-index: 2; transition: opacity 200ms ease; }
+.fgc-video-box--ctp.is-playing .fgc-video-label--ctp { opacity: 0; }
 .fgc-play-btn {
     position: absolute;
     top: 50%;

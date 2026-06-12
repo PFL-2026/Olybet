@@ -411,7 +411,7 @@
           },
           {
             src: 'assets/video/event/athlete_attendance', label: 'Athlete Attendance',
-            vdesc: 'PFL fighters and champions on-site and in the crowd — guaranteed star power that pulls fans, cameras and content on fight night.'
+            vdesc: 'Athletes and celebrities on-site and in the crowd — guaranteed star power that pulls fans, cameras and content on fight night.'
           }
         ]
       },
@@ -488,7 +488,7 @@
         const attrs = clickToPlay
           ? 'preload="metadata"'
           : 'autoplay muted loop playsinline preload="auto"';
-        const labelCls = clickToPlay ? 'fgc-video-label fgc-video-label--top' : 'fgc-video-label';
+        const labelCls = clickToPlay ? 'fgc-video-label fgc-video-label--ctp' : 'fgc-video-label';
         html += '<div class="fgc-series-box">'
           + '<div class="fgc-video-box' + (clickToPlay ? ' fgc-video-box--ctp' : '') + '">'
           + '<video ' + attrs + ' playsinline>'
