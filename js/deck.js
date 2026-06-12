@@ -424,7 +424,22 @@
       'content-series': {
         eyebrow: 'Fighter Generated Content',
         title: 'Original Content Series',
-        desc: 'Episodic, story-led content following fighters through camp, fight week and beyond — a recurring series that keeps OlyBet front and centre between events.'
+        desc: 'Episodic, story-led content following fighters through camp, fight week and beyond — a recurring series that keeps OlyBet front and centre between events.',
+        cover: 'assets/images/between_rounds_cover.jpg',
+        series: [
+          {
+            label: 'Between The Rounds',
+            embed: 'https://www.youtube.com/embed/Z56rQeSApBY?start=45',
+            archive: 'https://www.youtube.com/playlist?list=PL2PVbMNCCWz6W0zBXMa_6jsfIXJFt6iXg',
+            desc: 'Long-form sit-downs with the biggest personalities in MMA — fighters, coaches and icons on life, legacy and the stories behind the fights.'
+          },
+          {
+            label: 'PFL Origins',
+            embed: 'https://www.youtube.com/embed/Yodxdi5O6Ao?start=303',
+            archive: 'https://www.youtube.com/playlist?list=PL2PVbMNCCWz47LXCXGImUhA4-Y6RBV3Gy',
+            desc: 'Documentary-style storytelling tracing each fighter\'s road to the SmartCage — where they came from, what they overcame and what drives them.'
+          }
+        ]
       }
     };
 
@@ -454,14 +469,31 @@
       return html;
     }
 
+    function seriesGrid(series) {
+      let html = '<div class="fgc-modal-videos">';
+      series.forEach(s => {
+        html += '<div class="fgc-series-box">'
+          + '<div class="fgc-embed">'
+          + '<iframe src="' + s.embed + '" title="' + s.label + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
+          + '<span class="fgc-video-label fgc-embed-label">' + s.label + '</span>'
+          + '</div>'
+          + '<p class="fgc-series-desc">' + s.desc + '</p>'
+          + '<a class="fgc-archive-btn" href="' + s.archive + '" target="_blank" rel="noopener">' + s.label + ' — Full Archive&nbsp;→</a>'
+          + '</div>';
+      });
+      html += '</div>';
+      return html;
+    }
+
     function open(key) {
       const d = DATA[key];
       if (!d) return;
       content.innerHTML =
+        (d.cover ? '<img class="fgc-cover" src="' + d.cover + '" alt="">' : '') +
         '<div class="fgc-modal-eyebrow">' + d.eyebrow + '</div>' +
         '<h2 class="fgc-modal-title">' + d.title + '</h2>' +
         '<p class="fgc-modal-desc">' + d.desc + '</p>' +
-        (d.videos ? videoGrid(d.videos) : placeholders(4));
+        (d.series ? seriesGrid(d.series) : d.videos ? videoGrid(d.videos) : placeholders(4));
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       // Kick autoplay in browsers that ignore the attribute on injected nodes
