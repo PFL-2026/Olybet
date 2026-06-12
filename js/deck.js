@@ -425,19 +425,18 @@
         eyebrow: 'Fighter Generated Content',
         title: 'Original Content Series',
         desc: 'Episodic, story-led content following fighters through camp, fight week and beyond — a recurring series that keeps OlyBet front and centre between events.',
-        cover: 'assets/images/between_rounds_cover.jpg',
         series: [
           {
             label: 'Between The Rounds',
             embed: 'https://www.youtube.com/embed/Z56rQeSApBY?start=45',
             archive: 'https://www.youtube.com/playlist?list=PL2PVbMNCCWz6W0zBXMa_6jsfIXJFt6iXg',
-            desc: 'Long-form sit-downs with the biggest personalities in MMA — fighters, coaches and icons on life, legacy and the stories behind the fights.'
+            desc: 'Long-form sit-downs with the biggest personalities in the PFL, hosted by Dan Hardy — fighters, coaches, execs, on life, legacy and the stories behind the fights.'
           },
           {
             label: 'PFL Origins',
             embed: 'https://www.youtube.com/embed/Yodxdi5O6Ao?start=303',
             archive: 'https://www.youtube.com/playlist?list=PL2PVbMNCCWz47LXCXGImUhA4-Y6RBV3Gy',
-            desc: 'Documentary-style storytelling tracing each fighter\'s road to the SmartCage — where they came from, what they overcame and what drives them.'
+            desc: 'Documentary-style storytelling tracing each fighter\'s road to the PFL — where they came from, what they overcame and what drives them.'
           }
         ]
       }
