@@ -457,13 +457,13 @@
         series: [
           {
             label: 'Between The Rounds',
-            embed: 'https://www.youtube.com/embed/Z56rQeSApBY?start=45',
+            embed: 'https://www.youtube.com/embed/Z56rQeSApBY',
             archive: 'https://www.youtube.com/playlist?list=PL2PVbMNCCWz6W0zBXMa_6jsfIXJFt6iXg',
             desc: 'Long-form sit-downs with the biggest personalities in the PFL, hosted by Dan Hardy — fighters, coaches, execs, on life, legacy and the stories behind the fights.'
           },
           {
             label: 'PFL Origins',
-            embed: 'https://www.youtube.com/embed/Yodxdi5O6Ao?start=303',
+            embed: 'https://www.youtube.com/embed/Yodxdi5O6Ao',
             archive: 'https://www.youtube.com/playlist?list=PL2PVbMNCCWz47LXCXGImUhA4-Y6RBV3Gy',
             desc: 'Documentary-style storytelling tracing each fighter\'s road to the PFL — where they came from, what they overcame and what drives them.'
           }
