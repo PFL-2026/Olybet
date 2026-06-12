@@ -4191,6 +4191,28 @@ body.terms-modal-open { overflow: hidden; }
 }
 .fgc-embed-label { pointer-events: none; z-index: 2; }
 .fgc-video-label--top { top: 12px; bottom: auto; pointer-events: none; z-index: 2; }
+.fgc-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 72px;
+    height: 72px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--ls-green);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.55);
+    transition: transform 180ms ease, background 200ms ease;
+}
+.fgc-play-btn svg { width: 34px; height: 34px; margin-left: 4px; }
+.fgc-play-btn:hover { background: var(--ls-green-bright); transform: translate(-50%, -50%) scale(1.12); }
+.fgc-video-box--ctp.is-playing .fgc-play-btn { display: none; }
 .fgc-series-desc {
     font-family: var(--font-body);
     font-size: 14px;

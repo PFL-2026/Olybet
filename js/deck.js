@@ -400,10 +400,20 @@
     const triggers = document.querySelectorAll('.fgc-explore');
 
     const DATA = {
-      'press-conferences': {
+      'event-night': {
         eyebrow: 'Fighter Generated Content',
-        title: 'Press Conferences',
-        desc: 'Front-row access to every pre-fight presser — the trash talk, the predictions and the headline moments, captured and packaged for OlyBet across social and broadcast.'
+        title: 'Event Night',
+        desc: 'OlyBet at the centre of fight night — money-can\'t-buy fan experiences and guaranteed PFL star power that put the brand face-to-face with fans at every event.',
+        videos: [
+          {
+            src: 'assets/video/event/meet_greet', label: 'Fighter Meet & Greet',
+            vdesc: 'Money-can\'t-buy access for fans and competition winners — signings, photos and face time with PFL stars, delivered as OlyBet-branded experiences.'
+          },
+          {
+            src: 'assets/video/event/athlete_attendance', label: 'Athlete Attendance',
+            vdesc: 'PFL fighters and champions on-site and in the crowd — guaranteed star power that pulls fans, cameras and content on fight night.'
+          }
+        ]
       },
       'fight-highlights': {
         eyebrow: 'Fighter Generated Content',
@@ -476,14 +486,19 @@
       let html = '<div class="fgc-modal-videos">';
       videos.forEach(v => {
         const attrs = clickToPlay
-          ? 'controls preload="metadata"'
+          ? 'preload="metadata"'
           : 'autoplay muted loop playsinline preload="auto"';
         const labelCls = clickToPlay ? 'fgc-video-label fgc-video-label--top' : 'fgc-video-label';
         html += '<div class="fgc-series-box">'
-          + '<div class="fgc-video-box">'
+          + '<div class="fgc-video-box' + (clickToPlay ? ' fgc-video-box--ctp' : '') + '">'
           + '<video ' + attrs + ' playsinline>'
           + '<source src="' + v.src + '.mp4" type="video/mp4">'
           + '</video>'
+          + (clickToPlay
+              ? '<button type="button" class="fgc-play-btn" aria-label="Play ' + v.label + '">'
+                + '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>'
+                + '</button>'
+              : '')
           + '<span class="' + labelCls + '">' + v.label + '</span>'
           + '</div>'
           + (v.vdesc ? '<p class="fgc-series-desc">' + v.vdesc + '</p>' : '')
@@ -522,6 +537,15 @@
       modal.setAttribute('aria-hidden', 'false');
       // Kick autoplay in browsers that ignore the attribute on injected nodes
       content.querySelectorAll('video[autoplay]').forEach(v => { v.play().catch(() => {}); });
+      content.querySelectorAll('.fgc-play-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const box = btn.closest('.fgc-video-box');
+          const video = box.querySelector('video');
+          box.classList.add('is-playing');
+          video.setAttribute('controls', '');
+          video.play().catch(() => {});
+        });
+      });
     }
     function close() {
       modal.classList.remove('is-open');
