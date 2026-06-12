@@ -403,28 +403,46 @@
       'press-conferences': {
         eyebrow: 'Fighter Generated Content',
         title: 'Press Conferences',
-        desc: 'Front-row access to every pre-fight presser — the trash talk, the predictions and the headline moments, captured and packaged for OlyBet across social and broadcast.'
+        desc: 'Front-row access to every pre-fight presser — the trash talk, the predictions and the headline moments, captured and packaged for OlyBet across social and broadcast.',
+        videos: []
       },
       'backstage': {
         eyebrow: 'Fighter Generated Content',
         title: 'Backstage Pre-Fight',
-        desc: 'Behind-the-curtain content from the locker room to the walkout tunnel — the nervous energy, the final preparations and the raw moments fans never normally see.'
+        desc: 'Behind-the-curtain content from the locker room to the walkout tunnel — the nervous energy, the final preparations and the raw moments fans never normally see.',
+        videos: []
       },
       'face-offs': {
         eyebrow: 'Fighter Generated Content',
         title: 'Fighter Face-Offs',
         desc: 'The tension of the staredown, frame by frame. High-impact face-off content built for virality and primed to drive engagement around every marquee matchup.',
         videos: [
-          { src: 'assets/video/fgc/faceoff_dubai', label: 'PFL Dubai' },
+          { src: 'assets/video/fgc/faceoff_dubai',  label: 'PFL Dubai'  },
           { src: 'assets/video/fgc/faceoff_madrid', label: 'PFL Madrid' }
         ]
       },
       'content-series': {
         eyebrow: 'Fighter Generated Content',
         title: 'Original Content Series',
-        desc: 'Episodic, story-led content following fighters through camp, fight week and beyond — a recurring series that keeps OlyBet front and centre between events.'
+        desc: 'Episodic, story-led content following fighters through camp, fight week and beyond — a recurring series that keeps OlyBet front and centre between events.',
+        videos: []
       }
     };
+
+    function videoGrid(videos) {
+      let html = '<div class="fgc-modal-videos">';
+      videos.forEach(v => {
+        html += '<div class="fgc-video-box">'
+          + '<video class="fgc-video" autoplay muted loop playsinline preload="auto">'
+          + '<source src="' + v.src + '.webm" type="video/webm">'
+          + '<source src="' + v.src + '.mp4" type="video/mp4">'
+          + '</video>'
+          + '<span class="fgc-video-label">' + v.label + '</span>'
+          + '</div>';
+      });
+      html += '</div>';
+      return html;
+    }
 
     function placeholders(n) {
       let html = '<div class="fgc-modal-videos">';
@@ -437,33 +455,19 @@
       return html;
     }
 
-    function videoGrid(videos) {
-      let html = '<div class="fgc-modal-videos">';
-      videos.forEach(v => {
-        html += '<div class="fgc-video-box">'
-          + '<video autoplay muted loop playsinline preload="auto">'
-          + '<source src="' + v.src + '.mp4" type="video/mp4">'
-          + '<source src="' + v.src + '.webm" type="video/webm">'
-          + '</video>'
-          + '<span class="fgc-video-label">' + v.label + '</span>'
-          + '</div>';
-      });
-      html += '</div>';
-      return html;
-    }
-
     function open(key) {
       const d = DATA[key];
       if (!d) return;
+      const media = (d.videos && d.videos.length) ? videoGrid(d.videos) : placeholders(4);
       content.innerHTML =
         '<div class="fgc-modal-eyebrow">' + d.eyebrow + '</div>' +
         '<h2 class="fgc-modal-title">' + d.title + '</h2>' +
         '<p class="fgc-modal-desc">' + d.desc + '</p>' +
-        (d.videos ? videoGrid(d.videos) : placeholders(4));
+        media;
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
-      // Kick autoplay in browsers that ignore the attribute on injected nodes
-      content.querySelectorAll('video').forEach(v => { v.play().catch(() => {}); });
+      // Kick off autoplay for any videos just inserted
+      content.querySelectorAll('video').forEach(v => { try { v.play(); } catch (e) {} });
     }
     function close() {
       modal.classList.remove('is-open');
