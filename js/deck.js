@@ -408,6 +408,7 @@
       'fight-highlights': {
         eyebrow: 'Fighter Generated Content',
         title: 'Automated Fight Highlights',
+        clickToPlay: true,
         desc: 'Automated, broadcast-quality highlight packages cut within minutes of every PFL fight — delivered to OlyBet to repurpose across owned channels, driving engagement and excitement around every event. All powered by WSC Sports.',
         videos: [
           {
@@ -471,15 +472,19 @@
       return html;
     }
 
-    function videoGrid(videos) {
+    function videoGrid(videos, clickToPlay) {
       let html = '<div class="fgc-modal-videos">';
       videos.forEach(v => {
+        const attrs = clickToPlay
+          ? 'controls preload="metadata"'
+          : 'autoplay muted loop playsinline preload="auto"';
+        const labelCls = clickToPlay ? 'fgc-video-label fgc-video-label--top' : 'fgc-video-label';
         html += '<div class="fgc-series-box">'
           + '<div class="fgc-video-box">'
-          + '<video autoplay muted loop playsinline preload="auto">'
+          + '<video ' + attrs + ' playsinline>'
           + '<source src="' + v.src + '.mp4" type="video/mp4">'
           + '</video>'
-          + '<span class="fgc-video-label">' + v.label + '</span>'
+          + '<span class="' + labelCls + '">' + v.label + '</span>'
           + '</div>'
           + (v.vdesc ? '<p class="fgc-series-desc">' + v.vdesc + '</p>' : '')
           + '</div>';
@@ -512,11 +517,11 @@
         '<div class="fgc-modal-eyebrow">' + d.eyebrow + '</div>' +
         '<h2 class="fgc-modal-title">' + d.title + '</h2>' +
         '<p class="fgc-modal-desc">' + d.desc + '</p>' +
-        (d.series ? seriesGrid(d.series) : d.videos ? videoGrid(d.videos) : placeholders(4));
+        (d.series ? seriesGrid(d.series) : d.videos ? videoGrid(d.videos, d.clickToPlay) : placeholders(4));
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       // Kick autoplay in browsers that ignore the attribute on injected nodes
-      content.querySelectorAll('video').forEach(v => { v.play().catch(() => {}); });
+      content.querySelectorAll('video[autoplay]').forEach(v => { v.play().catch(() => {}); });
     }
     function close() {
       modal.classList.remove('is-open');
