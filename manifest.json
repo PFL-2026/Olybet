@@ -1,0 +1,13 @@
+{
+  "name": "The Bois World Cup",
+  "short_name": "Bois WC",
+  "description": "World Cup 2026 fixtures, tables, knockouts and odds — UK & Brisbane time.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0b2e22",
+  "theme_color": "#0b2e22",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
