@@ -12,12 +12,11 @@
   const SECTION_RANGES = [
     { idx: 0, slides: [1] },
     { idx: 1, slides: [2, 3] },
-    { idx: 2, slides: [4, 5, 6, 7] },
-    { idx: 3, slides: [8, 9, 10] },
+    { idx: 2, slides: [4, 5, 6] },
+    { idx: 3, slides: [7, 8, 9, 10] },
     { idx: 4, slides: [11, 12, 13] },
     { idx: 5, slides: [14] },
     { idx: 6, slides: [15] },
-    { idx: 7, slides: [16] },
   ];
 
   const TOTAL_LOGICAL = 15;
@@ -211,6 +210,8 @@
   });
 
   document.addEventListener('keydown', (e) => {
+    // Typing in edit mode — never navigate
+    if (e.target && e.target.isContentEditable) return;
     // Defer to any open modal (events / terms / distribution) when one owns focus
     const eventsModal = document.getElementById('eventsModal');
     const termsModal = document.getElementById('termsModal');
@@ -313,91 +314,12 @@
     });
   })();
 
-  // === Terms Sheet Modal ===
-  // Opens the terms sheet in an overlay; "Download PDF" triggers the browser's
-  // print dialog with a print-specific stylesheet that re-renders the content
-  // for paper. User picks "Save as PDF" in the print dialog.
-  (function setupTermsModal() {
-    const modal = document.getElementById('termsModal');
-    if (!modal) return;
-    const triggers = document.querySelectorAll('[data-open-terms-modal]');
-    const closers = modal.querySelectorAll('[data-close-terms-modal]');
-    const printBtn = modal.querySelector('[data-print-terms]');
-
-    function openModal() {
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('terms-modal-open');
-    }
-    function closeModal() {
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('terms-modal-open');
-    }
-    function printTerms() {
-      // The print stylesheet shows only #termsModal contents formatted for paper.
-      // Most browsers default to "Save as PDF" in the print dialog destination.
-      window.print();
-    }
-
-    triggers.forEach(t => t.addEventListener('click', openModal));
-    closers.forEach(c => c.addEventListener('click', closeModal));
-    if (printBtn) printBtn.addEventListener('click', printTerms);
-
-    document.addEventListener('keydown', (e) => {
-      if (!modal.classList.contains('is-open')) return;
-      if (e.key === 'Escape') { closeModal(); }
-    });
-  })();
-
-  // === Distribution & Reach Modals ===
-  // Broadcast (slide 4) and Social (slide 8) — same shell pattern as terms.
-  // Each trigger has data-open-dist-modal="<modalId>".
-  (function setupDistModals() {
-    const modals = document.querySelectorAll('.dist-modal');
-    if (!modals.length) return;
-    const triggers = document.querySelectorAll('[data-open-dist-modal]');
-
-    function openDistModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (!modal) return;
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('terms-modal-open');
-    }
-    function closeAllDist() {
-      modals.forEach(m => {
-        m.classList.remove('is-open');
-        m.setAttribute('aria-hidden', 'true');
-      });
-      document.body.classList.remove('terms-modal-open');
-    }
-
-    triggers.forEach(t => {
-      t.addEventListener('click', () => openDistModal(t.dataset.openDistModal));
-    });
-    modals.forEach(modal => {
-      modal.querySelectorAll('[data-close-dist-modal]').forEach(c => {
-        c.addEventListener('click', closeAllDist);
-      });
-      modal.querySelectorAll('[data-print-dist]').forEach(p => {
-        p.addEventListener('click', () => window.print());
-      });
-    });
-
-    document.addEventListener('keydown', (e) => {
-      const anyOpen = Array.from(modals).some(m => m.classList.contains('is-open'));
-      if (!anyOpen) return;
-      if (e.key === 'Escape') { closeAllDist(); }
-    });
-  })();
-
   // FGC detail modal — content showcase for slide 11
   (function setupFgcModal() {
     const modal = document.getElementById('fgcModal');
     if (!modal) return;
     const content = document.getElementById('fgcModalContent');
-    const triggers = document.querySelectorAll('.fgc-explore');
+    const triggers = document.querySelectorAll('.fgc-explore, [data-fgc]');
 
     const DATA = {
       'event-night': {
@@ -445,9 +367,18 @@
         desc: 'The tension of the staredown, frame by frame. High-impact face-off content built for virality and primed to drive engagement around every marquee matchup.',
         videos: [
           { src: 'assets/video/fgc/faceoff_dubai', label: 'PFL Dubai' },
-          { src: 'assets/video/fgc/faceoff_madrid', label: 'PFL Madrid' },
           { src: 'assets/video/fgc/faceoff_paris', label: 'PFL Paris' },
           { src: 'assets/video/fgc/faceoff_nashville', label: 'PFL Nashville' }
+        ]
+      },
+      'led-wristbands': {
+        eyebrow: 'In-Arena Activation',
+        title: 'Sponsored LED Wristbands',
+        withControls: true,
+        desc: 'OlyBet-branded LED wristbands in action — the whole crowd lit up and synced to the biggest moments of fight night.',
+        videos: [
+          { src: 'assets/video/led/led_wristbands_1', label: 'In Action' },
+          { src: 'assets/video/led/led_wristbands_2', label: 'Crowd Sync' }
         ]
       },
       'content-series': {
@@ -482,12 +413,12 @@
       return html;
     }
 
-    function videoGrid(videos, clickToPlay) {
+    function videoGrid(videos, clickToPlay, withControls) {
       let html = '<div class="fgc-modal-videos">';
       videos.forEach(v => {
         const attrs = clickToPlay
           ? 'preload="metadata"'
-          : 'autoplay muted loop playsinline preload="auto"';
+          : 'autoplay muted loop playsinline preload="auto"' + (withControls ? ' controls' : '');
         const labelCls = clickToPlay ? 'fgc-video-label fgc-video-label--ctp' : 'fgc-video-label';
         html += '<div class="fgc-series-box">'
           + '<div class="fgc-video-box' + (clickToPlay ? ' fgc-video-box--ctp' : '') + '">'
@@ -532,7 +463,7 @@
         '<div class="fgc-modal-eyebrow">' + d.eyebrow + '</div>' +
         '<h2 class="fgc-modal-title">' + d.title + '</h2>' +
         '<p class="fgc-modal-desc">' + d.desc + '</p>' +
-        (d.series ? seriesGrid(d.series) : d.videos ? videoGrid(d.videos, d.clickToPlay) : placeholders(4));
+        (d.series ? seriesGrid(d.series) : d.videos ? videoGrid(d.videos, d.clickToPlay, d.withControls) : placeholders(4));
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       // Kick autoplay in browsers that ignore the attribute on injected nodes
@@ -546,6 +477,7 @@
           video.play().catch(() => {});
         });
       });
+      content.classList.toggle('fgc-modal-content--led', key === 'led-wristbands');
     }
     function close() {
       modal.classList.remove('is-open');
@@ -616,6 +548,155 @@
 
     if (trigger) trigger.addEventListener('click', openPlayer);
     if (closeBtn) closeBtn.addEventListener('click', (e) => { e.stopPropagation(); closePlayer(); });
+  })();
+
+
+  // === Edit mode — Ctrl+Shift+E (Cmd+Shift+E on Mac) ===
+  // Every text element on every slide becomes editable. Edits autosave to this
+  // browser (localStorage) and are restored on load. "Export HTML" downloads a
+  // baked index.html with the edits written in, ready to commit to GitHub.
+  (function setupEditMode() {
+    const STRUCT = document.documentElement.getAttribute('data-edit-struct') || 'v1';
+    const KEY = 'olybet-deck-edits::' + STRUCT;
+    const SKIP_TAGS = { SCRIPT: 1, STYLE: 1, SVG: 1, VIDEO: 1, SOURCE: 1, IFRAME: 1, IMG: 1, NOSCRIPT: 1 };
+
+    // Deterministic list of editable roots: outermost elements that own text
+    function collect(root) {
+      const out = [];
+      const walk = (el, marked) => {
+        for (const child of el.children) {
+          if (SKIP_TAGS[child.tagName.toUpperCase()]) continue;
+          if (child.closest('[aria-hidden="true"]') && !child.closest('.slide')) continue;
+          let ownText = false;
+          if (!marked) {
+            for (const n of child.childNodes) {
+              if (n.nodeType === 3 && n.nodeValue.trim()) { ownText = true; break; }
+            }
+          }
+          if (ownText) out.push(child);
+          walk(child, marked || ownText);
+        }
+      };
+      walk(root, false);
+      return out;
+    }
+
+    const deckEl = document.getElementById('deck');
+    const targets = collect(deckEl);
+    targets.forEach((el, i) => el.setAttribute('data-edit-id', 'e' + i));
+
+    function load() {
+      try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; }
+    }
+    function save(map) {
+      try { localStorage.setItem(KEY, JSON.stringify(map)); } catch (e) {}
+    }
+    let edits = load();
+    // Restore saved edits on load
+    Object.keys(edits).forEach(id => {
+      const el = deckEl.querySelector('[data-edit-id="' + id + '"]');
+      if (el) el.innerHTML = edits[id];
+    });
+
+    // Toolbar — hidden until edit mode is switched on
+    const bar = document.createElement('div');
+    bar.className = 'edit-bar';
+    bar.setAttribute('aria-hidden', 'true');
+    bar.innerHTML =
+      '<span class="edit-bar-dot"></span>' +
+      '<span class="edit-bar-label">Edit mode</span>' +
+      '<span class="edit-bar-status" id="editBarStatus">Click any text to edit · autosaves</span>' +
+      '<button type="button" data-edit-export>Export HTML</button>' +
+      '<button type="button" data-edit-reset>Reset</button>' +
+      '<button type="button" data-edit-done>Done</button>';
+    document.body.appendChild(bar);
+    const statusEl = bar.querySelector('#editBarStatus');
+
+    let on = false;
+    function setMode(state) {
+      on = state;
+      document.body.classList.toggle('edit-mode', on);
+      bar.setAttribute('aria-hidden', on ? 'false' : 'true');
+      targets.forEach(el => {
+        if (on) { el.setAttribute('contenteditable', 'true'); el.setAttribute('spellcheck', 'false'); }
+        else { el.removeAttribute('contenteditable'); el.removeAttribute('spellcheck'); }
+      });
+      if (!on && document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    }
+
+    let t = null;
+    deckEl.addEventListener('input', (e) => {
+      if (!on) return;
+      const el = e.target.closest('[data-edit-id]');
+      if (!el) return;
+      edits[el.getAttribute('data-edit-id')] = el.innerHTML;
+      clearTimeout(t);
+      statusEl.textContent = 'Saving…';
+      t = setTimeout(() => { save(edits); statusEl.textContent = 'Draft saved to this browser'; }, 300);
+    });
+
+    // While editing, clicks on text inside links/buttons place the caret instead of firing
+    document.addEventListener('click', (e) => {
+      if (!on) return;
+      const el = e.target.closest('[data-edit-id]');
+      if (el && e.target.closest('a, button')) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
+    // Paste as plain text
+    deckEl.addEventListener('paste', (e) => {
+      if (!on || !e.target.closest('[data-edit-id]')) return;
+      e.preventDefault();
+      const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+      document.execCommand('insertText', false, text);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'E' || e.key === 'e')) {
+        e.preventDefault();
+        setMode(!on);
+      } else if (on && e.key === 'Escape' && document.activeElement && document.activeElement.isContentEditable) {
+        document.activeElement.blur();
+      }
+    });
+
+    bar.querySelector('[data-edit-done]').addEventListener('click', () => setMode(false));
+    bar.querySelector('[data-edit-reset]').addEventListener('click', () => {
+      if (!confirm('Discard all text edits saved in this browser?')) return;
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      location.reload();
+    });
+
+    function download(html) {
+      const blob = new Blob([html], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    }
+
+    bar.querySelector('[data-edit-export]').addEventListener('click', async () => {
+      save(edits);
+      statusEl.textContent = 'Building export…';
+      try {
+        const res = await fetch(location.pathname.endsWith('/') ? location.pathname + 'index.html' : location.pathname, { cache: 'no-store' });
+        if (!res.ok) throw new Error('fetch failed');
+        const src = await res.text();
+        const doc = new DOMParser().parseFromString(src, 'text/html');
+        const srcDeck = doc.getElementById('deck');
+        const srcTargets = collect(srcDeck);
+        srcTargets.forEach((el, i) => {
+          const id = 'e' + i;
+          if (Object.prototype.hasOwnProperty.call(edits, id)) el.innerHTML = edits[id];
+        });
+        const dt = src.match(/^\s*<!DOCTYPE[^>]*>/i);
+        download((dt ? dt[0] + '\n' : '<!DOCTYPE html>\n') + doc.documentElement.outerHTML + '\n');
+        statusEl.textContent = 'Exported index.html — upload to GitHub to publish';
+      } catch (err) {
+        statusEl.textContent = 'Export needs the deck served over http(s)';
+      }
+    });
   })();
 
   // Init
